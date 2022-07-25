@@ -1,6 +1,15 @@
 
-
+// We set the countries taht will participate
 let countries = ['England', 'Denmark', 'Norway', 'Finland', 'Sweden', 'Italy', 'Netherlands', 'Poland', 'Croatia', 'Malta', 'Ireland', 'Romania', 'Belgium', 'Germany', 'Greece', 'Switzerland'];
+
+// We create the four arrays of the four groups
+let groupA = [];
+let groupB = [];
+let groupC = [];
+let groupD = [];
+
+// Array to control and print the results of the matches
+//let matchResults = {team, score, myGoals, theirGoals, difference};
 
 // Fills Up the array of countries with the variables needed to control the Cup
 function fillUp ()
@@ -38,7 +47,23 @@ function shuffle(array)
     return array;
 }
 
-// Sets the group of each team and orders the list
+// Sets the group of each team and orders the list (Working Version)
+/*function setGroups(countries)
+{
+    let i = 0;
+    for (y=0; y<4;y++)
+    {
+        for (x=0;x<4;x++)
+        {
+            countries[i].group = x+1;
+            i++;
+        }
+    }
+
+    countries.sort((a, b) => (a.group > b.group) ? 1 : -1);
+}*/
+
+//Trying to divide the teams in the four arrays
 function setGroups(countries)
 {
     let i = 0;
@@ -46,7 +71,6 @@ function setGroups(countries)
     {
         for (x=0;x<4;x++)
         {
-            //console.log(x);
             countries[i].group = x+1;
             i++;
         }
@@ -59,3 +83,5 @@ fillUp(countries);
 shuffle(countries);
 setGroups(countries);
 console.table(countries);
+
+
