@@ -47,23 +47,7 @@ function shuffle(array)
     return array;
 }
 
-// Sets the group of each team and orders the list (Working Version)
-/*function setGroups(countries)
-{
-    let i = 0;
-    for (y=0; y<4;y++)
-    {
-        for (x=0;x<4;x++)
-        {
-            countries[i].group = x+1;
-            i++;
-        }
-    }
-
-    countries.sort((a, b) => (a.group > b.group) ? 1 : -1);
-}*/
-
-//Trying to divide the teams in the four arrays
+// Sets the group of each team and orders the list in one array (Working Version)
 function setGroups(countries)
 {
     let i = 0;
@@ -79,9 +63,41 @@ function setGroups(countries)
     countries.sort((a, b) => (a.group > b.group) ? 1 : -1);
 }
 
+//Divide the teams in the four arrays
+function divideGroups(x)
+{
+    for(i=0;i<4;i++)
+    {
+        switch (x)
+        {
+            case x=1:
+                groupA[i] = countries[i];
+                break;
+            case x=2:
+                groupB[i] = countries[i+4];
+                break;
+            case x=3:
+                groupC[i] = countries[i+8];
+                break;
+            case x=4:
+                groupD[i] = countries[i+12];
+                break;
+        }
+    }
+}
+
 fillUp(countries);
 shuffle(countries);
 setGroups(countries);
+divideGroups(1);
+divideGroups(2);
+divideGroups(3);
+divideGroups(4);
+
 console.table(countries);
+console.table(groupA);
+console.table(groupB);
+console.table(groupC);
+console.table(groupD);
 
 
