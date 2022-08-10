@@ -86,11 +86,25 @@ function divideGroups(x)
     }
 }
 
-// Show group and teams matches of every day for the group phase
-function displayGroupPhase (group)
+// Show group and team matches of every day for the group phase
+function displayGroupPhase (group, x)
 {
     console.log("");
-    console.log("==  groupA  ==");
+    switch (x)
+    {
+        case x=1:
+            console.log("==  Group A  ==");
+            break;
+        case x=2:
+            console.log("==  Group B  ==");
+            break;
+        case x=3:
+            console.log("==  Group C  ==");
+            break;
+        case x=4:
+            console.log("==  Group D  ==");
+            break;
+    }
 
     console.log(group[0].country);
     console.log(group[1].country);
@@ -135,7 +149,7 @@ console.table(groupC);
 console.table(groupD);
 
 
-displayGroupPhase(groupA);
-displayGroupPhase(groupB);
-displayGroupPhase(groupC);
-displayGroupPhase(groupD);
+displayGroupPhase(groupA, 1);
+displayGroupPhase(groupB, 2);
+displayGroupPhase(groupC, 3);
+displayGroupPhase(groupD, 4);
