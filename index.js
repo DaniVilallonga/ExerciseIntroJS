@@ -63,7 +63,7 @@ function setGroups(countries)
     countries.sort((a, b) => (a.group > b.group) ? 1 : -1);
 }
 
-//Divide the teams in the four arrays
+// Divide the teams in the four arrays
 function divideGroups(x)
 {
     for(i=0;i<4;i++)
@@ -86,6 +86,39 @@ function divideGroups(x)
     }
 }
 
+// Show group and teams matches of every day for the group phase
+function displayGroupPhase (group)
+{
+    console.log("");
+    console.log("==  groupA  ==");
+
+    console.log(group[0].country);
+    console.log(group[1].country);
+    console.log(group[2].country);
+    console.log(group[3].country);
+    console.log("");
+
+    console.log("Day 1");
+    console.log(group[0].country + " vs " + group[3].country);
+    console.log(group[1].country + " vs " + group[2].country);
+    console.log("");
+
+    console.log("Day 2");
+    console.log(group[3].country + " vs " + group[2].country);
+    console.log(group[0].country + " vs " + group[1].country);
+    console.log("");
+
+    console.log("Day 3");
+    console.log(group[1].country + " vs " + group[3].country);
+    console.log(group[2].country + " vs " + group[0].country);
+
+    console.log("");
+    console.log("");
+}
+
+
+
+
 fillUp(countries);
 shuffle(countries);
 setGroups(countries);
@@ -94,10 +127,15 @@ divideGroups(2);
 divideGroups(3);
 divideGroups(4);
 
-console.table(countries);
+
+//console.table(countries);
 console.table(groupA);
 console.table(groupB);
 console.table(groupC);
 console.table(groupD);
 
 
+displayGroupPhase(groupA);
+displayGroupPhase(groupB);
+displayGroupPhase(groupC);
+displayGroupPhase(groupD);
