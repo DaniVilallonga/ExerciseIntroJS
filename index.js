@@ -7,6 +7,10 @@ let groupA = [];
 let groupB = [];
 let groupC = [];
 let groupD = [];
+let matchResultsA = [];
+let matchResultsB = [];
+let matchResultsC = [];
+let matchResultsD = [];
 
 // Array to control and print the results of the matches
 //let matchResults = {team, score, myGoals, theirGoals, difference};
@@ -55,7 +59,22 @@ function setGroups(countries)
     {
         for (x=0;x<4;x++)
         {
-            countries[i].group = x+1;
+            switch (x)
+            {
+                case x=0:
+                    countries[i].group = "A";
+                    break;
+                case x=1:
+                    countries[i].group = "B";
+                    break;
+                case x=2:
+                    countries[i].group = "C";
+                    break;
+                case x=3:
+                    countries[i].group = "D";
+                    break;
+            }
+            
             i++;
         }
     }
@@ -86,25 +105,12 @@ function divideGroups(x)
     }
 }
 
-// Show group and team matches of every day for the group phase
-function displayGroupPhase (group, x)
+// Display group and team matches of every day for the group phase
+function displayGroupPhase (group)
 {
     console.log("");
-    switch (x)
-    {
-        case x=1:
-            console.log("==  Group A  ==");
-            break;
-        case x=2:
-            console.log("==  Group B  ==");
-            break;
-        case x=3:
-            console.log("==  Group C  ==");
-            break;
-        case x=4:
-            console.log("==  Group D  ==");
-            break;
-    }
+    console.log("== Group " + group[0].group + " ==");
+
 
     console.log(group[0].country);
     console.log(group[1].country);
@@ -130,6 +136,14 @@ function displayGroupPhase (group, x)
     console.log("");
 }
 
+// Play matches of a day for a given group and distribute the points
+function playMatchesDay (group, results)
+{
+    
+}
+
+
+
 
 
 
@@ -149,7 +163,12 @@ console.table(groupC);
 console.table(groupD);
 
 
-displayGroupPhase(groupA, 1);
-displayGroupPhase(groupB, 2);
-displayGroupPhase(groupC, 3);
-displayGroupPhase(groupD, 4);
+displayGroupPhase(groupA);
+displayGroupPhase(groupB);
+displayGroupPhase(groupC);
+displayGroupPhase(groupD);
+
+console.log("===================================");
+console.log("===== START OF THE WOMEN'S CUP ====");
+console.log("===================================");
+
