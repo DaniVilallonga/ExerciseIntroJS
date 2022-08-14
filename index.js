@@ -9,10 +9,12 @@ let matchDay = 1;
 let a = 0;
 let b = 0;
 let winner;
+let loser;
 
-// We create the array of 8 teams that get into the finals
+// We create arrays to control the groups in the final stages of the competition
 let semiFinalTeams = [];
 let finalTeams = [];
+let losers = [];
 
 // We create the four arrays of the four groups
 let groupA = [];
@@ -41,11 +43,7 @@ function fillUpCountries ()
     {
         let name = countries[i];
         countries[i] = ({country: name,
-                        totalGoals: 0,
-                        matchGoals: 0,
-                        teamPoints: 0,
-                        group: 0,
-                        position: 0});
+                        group: 0});
     }
 }
 
@@ -232,8 +230,8 @@ function playMatchesDay (group, results)
     console.log(" ");
 }
 
-// Play a match in the final stages
-function finalMatch(teamA, teamB, i)
+// Play a match in the quarters of finals
+function quartersMatches(teamA, teamB, i)
 {
     a = getGoals();
     b = getGoals();
@@ -255,51 +253,60 @@ function finalMatch(teamA, teamB, i)
     }
 }
 
-// Fill up the array of the 8 final teams
-function finalsTeams()
+// Play a game in the semi finals
+function semiFinalMatches(teamA, teamB, i)
 {
+    a = getGoals();
+    b = getGoals();
 
-    /*group = 1;
-
-    for (i=0; i<8;)
+    while (a===b)
     {
-        for (r=0; r<2; r++)
-        {
-            switch (group)
-            {
-                case 1:
-                case 2:
-                    finalTeams[i] = resultsA[r];
-                    group++;
-                    i++;
-                break;
-                case 3:
-                case 4:
-                    finalTeams[i] = resultsB[r];
-                    group++;
-                    i++;
-                break;
-                case 5:
-                case 6:
-                    finalTeams[i] = resultsC[r];
-                    group++;
-                    i++;
-                break;
-                case 7:
-                case 8:
-                    finalTeams[i] = resultsD[r];
-                    group++;
-                    i++;
-                break;
-            }
-        }
-    }*/
+        a = getGoals();
+        b = getGoals();
+    }
+
+    if (a>b)
+    {
+        winner = teamA;
+        loser = teamB;
+    }else
+    {
+        winner = teamB;
+        loser = teamA;
+    }
+
+    finalTeams[i] = winner;
+    losers[i] = loser;
 }
+
+// Play the match for the 3d and 4th positions
+function losersMatch (teamA, teamB)
+{
+    a = getGoals();
+    b = getGoals();
+
+    while (a===b)
+    {
+        a = getGoals();
+        b = getGoals();
+    }
+
+    if (a>b)
+    {
+        winner = teamA;
+    }else
+    {
+        winner = teamB;
+    }
+}
+
 
 // =======================
 // Start of the Execution
 // =======================
 
+console.log("Groups and teams");
+console.log("==============================")
 fillUpCountries(countries);
 shuffle(countries);
 setGroups(countries);
@@ -339,7 +346,6 @@ playMatchesDay(groupB, resultsB);
 playMatchesDay(groupC, resultsC);
 playMatchesDay(groupD, resultsD);
 
-finalsTeams();
 
 console.log("=========================================");
 console.log("===== START OF THE ELIMINATION PHASE ====");
@@ -356,27 +362,38 @@ console.log(" ");
 
 console.log("=== QUARTERS OF FINALS ===");
 
-finalMatch(resultsA[0].team, resultsB[1].team, 0)
+quartersMatches(resultsA[0].team, resultsB[1].team, 0)
 console.log(resultsA[0].team + " " + a + " - " + b + " " + resultsB[1].team + " => " + winner);
 
-finalMatch(resultsB[0].team, resultsA[1].team, 1)
+quartersMatches(resultsB[0].team, resultsA[1].team, 1)
 console.log(resultsB[0].team + " " + a + " - " + b + " " + resultsA[1].team + " => " + winner);
 
-finalMatch(resultsC[0].team, resultsD[1].team, 2)
+quartersMatches(resultsC[0].team, resultsD[1].team, 2)
 console.log(resultsC[0].team + " " + a + " - " + b + " " + resultsD[1].team + " => " + winner);
 
-finalMatch(resultsD[0].team, resultsC[1].team, 3)
+quartersMatches(resultsD[0].team, resultsC[1].team, 3)
 console.log(resultsD[0].team + " " + a + " - " + b + " " + resultsC[1].team + " => " + winner);
 
 console.log("");
 
-console.table(semiFinalTeams);
-
 console.log("=== SEMI FINALS ===");
+semiFinalMatches(semiFinalTeams[0], semiFinalTeams[2], 0)
+console.log(semiFinalTeams[0] + " " + a + " - " + b + " " + semiFinalTeams[2] + " => " + winner);
+
+semiFinalMatches(semiFinalTeams[1], semiFinalTeams[3], 1)
+console.log(semiFinalTeams[1] + " " + a + " - " + b + " " + semiFinalTeams[3] + " => " + winner);
 console.log("");
 
-finalMatch(semiFinalTeams[0], semiFinalTeams[2], 0)
-console.log(semiFinalTeams[0] + " " + a + " - " + b + " " + semiFinalTeams[2].team + " => " + winner);
+console.log("=== 3d AND 4th ===");
+losersMatch(losers[0], losers[1])
+console.log(losers[0] + " " + a + " - " + b + " " + losers[1] + " => " + winner);
+console.log("");
 
-finalMatch(semiFinalTeams[1], semiFinalTeams[3], 1)
-console.log(semiFinalTeams[1] + " " + a + " - " + b + " " + semiFinalTeams[3].team + " => " + winner);
+console.log("=== FINAL ===");
+quartersMatches(finalTeams[0], finalTeams[1], 0)
+console.log(finalTeams[0] + " " + a + " - " + b + " " + finalTeams[1] + " => " + winner);
+
+console.log("");
+console.log("================================================");
+console.log(winner + " is the champion of the EURO WOMEN'S CUP!");
+console.log("================================================");
