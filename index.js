@@ -2,21 +2,40 @@
 // We set the countries taht will participate
 let countries = ['England', 'Denmark', 'Norway', 'Finland', 'Sweden', 'Italy', 'Netherlands', 'Poland', 'Croatia', 'Malta', 'Ireland', 'Romania', 'Belgium', 'Germany', 'Greece', 'Switzerland'];
 
+// Parameter to control the day in the tournament
+let matchDay = 1;
+
+// Parameters to control the score and the winner in the final stages of the competition
+let a = 0;
+let b = 0;
+let winner;
+
+// We create the array of 8 teams that get into the finals
+let semiFinalTeams = [];
+let finalTeams = [];
+
 // We create the four arrays of the four groups
 let groupA = [];
 let groupB = [];
 let groupC = [];
 let groupD = [];
-let matchResultsA = [];
-let matchResultsB = [];
-let matchResultsC = [];
-let matchResultsD = [];
 
-// Array to control and print the results of the matches
-//let matchResults = {team, score, myGoals, theirGoals, difference};
+// Arrays to control and print the results of the matches
+let resultsA = [];
+let resultsB = [];
+let resultsC = [];
+let resultsD = [];
+
+// Gets a random number of goals
+function getGoals()
+{
+    min = Math.ceil(0);
+    max = Math.floor(7);
+    return Math.floor(Math.random() * (7 - 0) + 0);
+}
 
 // Fills Up the array of countries with the variables needed to control the Cup
-function fillUp ()
+function fillUpCountries ()
 {
     for (let i=0; i<countries.length;i++)
     {
@@ -25,9 +44,24 @@ function fillUp ()
                         totalGoals: 0,
                         matchGoals: 0,
                         teamPoints: 0,
-                        matchDay: 0,
                         group: 0,
                         position: 0});
+    }
+}
+
+// Creates the array to control the results in the first phase of a given group
+function fillUpResults (group, results)
+{
+    for (i=0; i<4; i++)
+    {
+        results[i]  = ({
+            team: group[i].country,
+            score: 0,
+            myGoals: 0,
+            theirGoals: 0,
+            difference: 0
+
+        })
     }
 }
 
@@ -51,7 +85,7 @@ function shuffle(array)
     return array;
 }
 
-// Sets the group of each team and orders the list in one array (Working Version)
+// Sets the group of each team and orders the list in one array
 function setGroups(countries)
 {
     let i = 0;
@@ -136,32 +170,147 @@ function displayGroupPhase (group)
     console.log("");
 }
 
-// Play matches of a day for a given group and distribute the points
+// Play the playoff phase matches of a day for a given group, distribute the points and orders the array
 function playMatchesDay (group, results)
 {
-    
+
+    x = getGoals();
+    y = getGoals();
+    z = getGoals();
+    w = getGoals();
+
+    results[0].myGoals = x;
+    results[1].myGoals = z;
+    results[2].myGoals = w;
+    results[3].myGoals = y;
+
+    results[0].theirGoals = y;
+    results[1].theirGoals = w;
+    results[2].theirGoals = z;
+    results[3].theirGoals = x;
+
+    results[0].difference = x-y;
+    results[1].difference = z-w;
+    results[2].difference = w-z;
+    results[3].difference = y-x;
+
+    for (i=0; i<4; i++)
+    {
+        if (results[i].difference>0)
+        {
+            results[i].score = results[i].score + 3;
+        }else if (results[i].difference===0)
+        {
+            results[i].score = results[i].score + 1;
+        }
+    }
+
+    results.sort((a, b) => {return b.score - a.score;});
+
+    console.log("Group " + group[0].group + " - Day " + matchDay + ":");
+    console.log("---------------------");
+
+    switch (matchDay)
+    {
+        case 1:
+            console.log(group[0].country + " " + x + " - " + y + " " + group[3].country);
+            console.log(group[1].country + " " + z + " - " + w + " " + group[2].country);
+        break;
+
+        case 2:
+            console.log(group[3].country + " " + y + " - " + w + " " + group[2].country);
+            console.log(group[0].country + " " + x + " - " + z + " " + group[1].country);
+        break;
+
+        case 3:
+            console.log(group[1].country + " " + z + " - " + y + " " + group[3].country);
+            console.log(group[2].country + " " + w + " - " + x + " " + group[0].country);
+        break;
+    }
+
+    console.table(results);
+    console.log(" ");
 }
 
+// Play a match in the final stages
+function finalMatch(teamA, teamB, i)
+{
+    a = getGoals();
+    b = getGoals();
 
+    while (a===b)
+    {
+        a = getGoals();
+        b = getGoals();
+    }
 
+    if (a>b)
+    {
+        winner = teamA;
+        semiFinalTeams[i] = teamA;
+    }else
+    {
+        winner = teamB;
+        semiFinalTeams[i] = teamB;
+    }
+}
 
+// Fill up the array of the 8 final teams
+function finalsTeams()
+{
 
+    /*group = 1;
 
-fillUp(countries);
+    for (i=0; i<8;)
+    {
+        for (r=0; r<2; r++)
+        {
+            switch (group)
+            {
+                case 1:
+                case 2:
+                    finalTeams[i] = resultsA[r];
+                    group++;
+                    i++;
+                break;
+                case 3:
+                case 4:
+                    finalTeams[i] = resultsB[r];
+                    group++;
+                    i++;
+                break;
+                case 5:
+                case 6:
+                    finalTeams[i] = resultsC[r];
+                    group++;
+                    i++;
+                break;
+                case 7:
+                case 8:
+                    finalTeams[i] = resultsD[r];
+                    group++;
+                    i++;
+                break;
+            }
+        }
+    }*/
+}
+
+// =======================
+// Start of the Execution
+// =======================
+
+fillUpCountries(countries);
 shuffle(countries);
 setGroups(countries);
 divideGroups(1);
 divideGroups(2);
 divideGroups(3);
 divideGroups(4);
-
-
-//console.table(countries);
-console.table(groupA);
-console.table(groupB);
-console.table(groupC);
-console.table(groupD);
-
+fillUpResults(groupA, resultsA);
+fillUpResults(groupB, resultsB);
+fillUpResults(groupC, resultsC);
+fillUpResults(groupD, resultsD);
 
 displayGroupPhase(groupA);
 displayGroupPhase(groupB);
@@ -171,4 +320,63 @@ displayGroupPhase(groupD);
 console.log("===================================");
 console.log("===== START OF THE WOMEN'S CUP ====");
 console.log("===================================");
+console.log(" ");
 
+playMatchesDay(groupA, resultsA);
+playMatchesDay(groupB, resultsB);
+playMatchesDay(groupC, resultsC);
+playMatchesDay(groupD, resultsD);
+matchDay++;
+
+playMatchesDay(groupA, resultsA);
+playMatchesDay(groupB, resultsB);
+playMatchesDay(groupC, resultsC);
+playMatchesDay(groupD, resultsD);
+matchDay++;
+
+playMatchesDay(groupA, resultsA);
+playMatchesDay(groupB, resultsB);
+playMatchesDay(groupC, resultsC);
+playMatchesDay(groupD, resultsD);
+
+finalsTeams();
+
+console.log("=========================================");
+console.log("===== START OF THE ELIMINATION PHASE ====");
+console.log("=========================================");
+console.log(" ");
+
+console.log("Participating teams:");
+console.log("GROUP A: " + resultsA[0].team + ", " + resultsA[1].team);
+console.log("GROUP B: " + resultsB[0].team + ", " + resultsB[1].team);
+console.log("GROUP C: " + resultsC[0].team + ", " + resultsC[1].team);
+console.log("GROUP D: " + resultsD[0].team + ", " + resultsD[1].team);
+
+console.log(" ");
+
+console.log("=== QUARTERS OF FINALS ===");
+
+finalMatch(resultsA[0].team, resultsB[1].team, 0)
+console.log(resultsA[0].team + " " + a + " - " + b + " " + resultsB[1].team + " => " + winner);
+
+finalMatch(resultsB[0].team, resultsA[1].team, 1)
+console.log(resultsB[0].team + " " + a + " - " + b + " " + resultsA[1].team + " => " + winner);
+
+finalMatch(resultsC[0].team, resultsD[1].team, 2)
+console.log(resultsC[0].team + " " + a + " - " + b + " " + resultsD[1].team + " => " + winner);
+
+finalMatch(resultsD[0].team, resultsC[1].team, 3)
+console.log(resultsD[0].team + " " + a + " - " + b + " " + resultsC[1].team + " => " + winner);
+
+console.log("");
+
+console.table(semiFinalTeams);
+
+console.log("=== SEMI FINALS ===");
+console.log("");
+
+finalMatch(semiFinalTeams[0], semiFinalTeams[2], 0)
+console.log(semiFinalTeams[0] + " " + a + " - " + b + " " + semiFinalTeams[2].team + " => " + winner);
+
+finalMatch(semiFinalTeams[1], semiFinalTeams[3], 1)
+console.log(semiFinalTeams[1] + " " + a + " - " + b + " " + semiFinalTeams[3].team + " => " + winner);
